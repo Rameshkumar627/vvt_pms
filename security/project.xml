@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data  noupdate="0">
+
+       <record model="ir.module.category" id="module_category_vvt_project_management">
+           <field name="name">VVTI Project Management</field>
+           <field name="description">VVTI Project Management</field>
+           <field name="sequence">4</field>
+       </record>
+
+       <record id="group_vvt_project_management_admin" model="res.groups">
+            <field name="name">VVTI Project - Administrator</field>
+            <field name="category_id" ref="module_category_vvt_project_management"/>
+       </record>
+
+       <record id="group_vvt_project_management_user" model="res.groups">
+            <field name="name">VVTI Project - User</field>
+            <field name="category_id" ref="module_category_vvt_project_management"/>
+       </record>
+
+   </data>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Product Menu-->
+    <menuitem name="Notes"
+              id="project_notes_menu"
+              parent="project_menu"
+              action="action_pms_note"
+              sequence="10"/>
+</odoo>

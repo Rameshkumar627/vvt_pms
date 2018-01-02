@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--Form View-->
+	<record model="ir.ui.view" id="view_pms_note_from">
+		<field name="name">pms.note.form</field>
+		<field name="model">pms.note</field>
+		<field name="arch" type="xml">
+			<form string="PMS Note">
+				<header>
+					<button name="trigger_noted" string="confirm"
+							group="vvt_pms.group_vvt_project_management_admin,vvt_pms.group_vvt_project_management_user"
+							type="object" attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+					<field name="progress" widget="statusbar"/>
+				</header>
+				<sheet>
+					<separator string="PMS Note" style="text-align:center;"/>
+                    <group>
+                        <field name="date" attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="name" attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="noted_by" readonly="1"/>
+                    </group>
+					<field name="attachment_detail" attrs="{'readonly':[('progress', 'not in',['draft'])]}">
+						<tree editable="bottom">
+							<field name="attachment"/>
+							<field name="comment"/>
+							<field name="note_id" invisible="1"/>
+						</tree>
+					</field>
+					<field name="comment" placeholder="Comment..." attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			</form>
+		</field>
+	</record>
+
+	<!--Tree View-->
+	<record model="ir.ui.view" id="view_pms_note_tree">
+		<field name="name">pms.note.tree</field>
+		<field name="model">pms.note</field>
+		<field name="arch" type="xml">
+			<tree string="PMS Note">
+				<field name="date"/>
+                <field name="name"/>
+			</tree>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record model="ir.actions.act_window" id="action_pms_note">
+        <field name="name">PMS Note</field>
+        <field name="res_model">pms.note</field>
+        <field name="view_type">form</field>
+        <field name="limit">50</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

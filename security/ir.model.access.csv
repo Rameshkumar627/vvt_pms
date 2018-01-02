@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+pms_note_group_vvt_project_management_admin,pms.note.group.vvt.project.management.admin,vvt_pms.model_pms_note,group_vvt_project_management_admin,1,1,1,1
+pms_note_group_vvt_project_management_user,pms.note.group.vvt.project.management.user,vvt_pms.model_pms_note,group_vvt_project_management_user,1,1,1,0
+note_detail_group_vvt_project_management_admin,note.detail.group.vvt.project.management.admin,vvt_pms.model_note_detail,group_vvt_project_management_admin,1,1,1,1
+note_detail_group_vvt_project_management_user,note.detail.group.vvt.project.management.user,vvt_pms.model_note_detail,group_vvt_project_management_user,1,1,1,0

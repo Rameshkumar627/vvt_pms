@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Project Menu-->
+    <menuitem name="Project" id="project_menu" sequence="10"/>
+    <menuitem name="Project" id="project_sub_menu" sequence="10"/>
+
+
+</odoo>
