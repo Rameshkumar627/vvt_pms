@@ -11,10 +11,13 @@
     'description': 'Project Management System',
     'depends': ['base', 'mail'],
     'data': [
+        'data/project.xml',
         'menu/main_menu.xml',
         'security/project.xml',
         'security/ir.model.access.csv',
         'views/project/notes.xml',
+        'views/project/procedure.xml',
+        'views/project/task.xml',
         'menu/project_menu.xml',
 
     ],

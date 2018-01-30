@@ -7,4 +7,17 @@
               parent="project_menu"
               action="action_pms_note"
               sequence="10"/>
+
+    <menuitem name="Procedure"
+              id="project_procedure_menu"
+              parent="project_menu"
+              action="action_pms_procedure"
+              sequence="20"/>
+
+    <menuitem name="Task"
+              id="project_task_menu"
+              parent="project_menu"
+              action="action_pms_task"
+              sequence="30"/>
+
 </odoo>

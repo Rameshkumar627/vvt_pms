@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--Form View-->
+	<record model="ir.ui.view" id="view_pms_procedure_form">
+		<field name="name">pms.procedure.form</field>
+		<field name="model">pms.procedure</field>
+		<field name="arch" type="xml">
+			<form string="Procedure">
+				<sheet>
+					<separator string="Procedure" style="text-align:center;"/>
+                    <group>
+                        <field name="name"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Steps">
+                            <field name="procedure_detail">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="details"/>
+                                    <field name="procedure_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Check List">
+                            <field name="check_list">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="details"/>
+                                    <field name="procedure_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!--Tree View-->
+	<record model="ir.ui.view" id="view_pms_procedure_tree">
+		<field name="name">pms.procedure.tree</field>
+		<field name="model">pms.procedure</field>
+		<field name="arch" type="xml">
+			<tree string="Procedure">
+				<field name="name"/>
+			</tree>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record model="ir.actions.act_window" id="action_pms_procedure">
+        <field name="name">Procedure</field>
+        <field name="res_model">pms.procedure</field>
+        <field name="view_type">form</field>
+        <field name="limit">50</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

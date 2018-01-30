@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--Form View-->
+	<record model="ir.ui.view" id="view_pms_task_form">
+		<field name="name">pms.task.form</field>
+		<field name="model">pms.task</field>
+		<field name="arch" type="xml">
+			<form string="Task">
+                <header>
+                    <button name="trigger_assigned" string="Assign"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('progress', 'not in',['draft'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_admin"/>
+                    <button name="trigger_developed" string="Start Coding"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('progress', 'not in',['assigned'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_user,vvt_pms.group_vvt_project_management_admin"/>
+                    <button name="trigger_completed" string="completed"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('progress', 'not in',['developed'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_user,vvt_pms.group_vvt_project_management_admin"/>
+                    <button name="trigger_cancelled" string="cancelled"
+                            type="object"
+                            attrs="{'invisible':[('progress', 'in',['draft', 'completed', 'cancelled'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_admin"/>
+                    <field name="progress" widget="statusbar"/>
+                </header>
+				<sheet>
+					<separator string="Task" style="text-align:center;"/>
+                    <h1><field name="sequence"/></h1>
+                    <group>
+                        <field name="date" attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="task" attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="parent_task"
+                               options='{"no_create": True}'
+                               attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="assigned_to"
+                               options='{"no_create": True}'
+                               attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        <field name="procedure"
+                               options='{"no_create": True}'
+                               attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+
+                    </group>
+
+                    <notebook>
+                        <page string="Solution">
+                            <field name="solution"
+                                   placeholder="Solution If any.."
+                                   attrs="{'readonly':[('progress', 'in',['draft', 'cancelled', 'completed'])]}"/>
+                        </page>
+                        <page string="Attachment" attrs="{'readonly':[('progress', 'in',['cancelled', 'completed'])]}">
+                            <field name="attachment">
+                                <tree editable="bottom">
+                                    <field name="attachment"/>
+                                    <field name="comment"/>
+                                    <field name="task_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                <field name="comment" placeholder="Comment..." attrs="{'readonly':[('progress', 'in',['cancelled', 'completed'])]}"/>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+			</form>
+		</field>
+	</record>
+
+	<!--Tree View-->
+	<record model="ir.ui.view" id="view_pms_task_tree">
+		<field name="name">pms.task.tree</field>
+		<field name="model">pms.task</field>
+		<field name="arch" type="xml">
+			<tree string="Task">
+                <field name="date"/>
+                <field name="sequence"/>
+				<field name="task"/>
+				<field name="parent_task"/>
+				<field name="assigned_to"/>
+				<field name="task_start"/>
+				<field name="task_end"/>
+			</tree>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record model="ir.actions.act_window" id="action_pms_task">
+        <field name="name">Task</field>
+        <field name="res_model">pms.task</field>
+        <field name="view_type">form</field>
+        <field name="limit">50</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>
