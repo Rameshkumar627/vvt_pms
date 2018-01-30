@@ -2,10 +2,11 @@
 <odoo>
 
     <!--Product Menu-->
-    <menuitem name="Notes"
-              id="project_notes_menu"
+
+    <menuitem name="Task"
+              id="project_task_menu"
               parent="project_menu"
-              action="action_pms_note"
+              action="action_pms_task"
               sequence="10"/>
 
     <menuitem name="Procedure"
@@ -14,10 +15,11 @@
               action="action_pms_procedure"
               sequence="20"/>
 
-    <menuitem name="Task"
-              id="project_task_menu"
+    <menuitem name="Notes"
+              id="project_notes_menu"
               parent="project_menu"
-              action="action_pms_task"
+              action="action_pms_note"
               sequence="30"/>
+
 
 </odoo>

@@ -23,6 +23,7 @@ class Task(models.Model):
     parent_task = fields.Many2one(comodel_name='pms.task', string='Parent Task')
     assigned_to = fields.Many2one(comodel_name='res.users', string='Assigned To', required=True)
     procedure = fields.Many2one(comodel_name='pms.procedure', string='Procedure')
+    task_detail = fields.Html(string='Task Detail', required=True)
     solution = fields.Html(string='Solution')
     attachment = fields.One2many(comodel_name='note.detail', inverse_name='task_id')
     comment = fields.Text(string='Comment', track_visibility='always')

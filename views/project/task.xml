@@ -45,6 +45,11 @@
                     </group>
 
                     <notebook>
+                        <page string="Details">
+                            <field name="task_detail"
+                                   placeholder="Task in Detail"
+                                   attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
+                        </page>
                         <page string="Solution">
                             <field name="solution"
                                    placeholder="Solution If any.."
@@ -85,9 +90,26 @@
 				<field name="assigned_to"/>
 				<field name="task_start"/>
 				<field name="task_end"/>
+                <field name="progress"/>
 			</tree>
 		</field>
 	</record>
+
+    <!--Search View-->
+    <record id="view_pms_task_search" model="ir.ui.view">
+        <field name="name">pms.task.search</field>
+        <field name="model">pms.task</field>
+        <field name="arch" type="xml">
+            <search string="Task">
+                <field name="date"/>
+                <field name="assigned_to" string="Assigned"/>
+                <field name="sequence"/>
+                <filter string="Month" context="{'group_by':'date:month'}"/>
+                <filter string="Progress" context="{'group_by':'progress'}"/>
+                <filter string="Assigned To" context="{'group_by':'assigned_to'}"/>
+            </search>
+        </field>
+    </record>
 
 	<!--Action-->
 	<record model="ir.actions.act_window" id="action_pms_task">
