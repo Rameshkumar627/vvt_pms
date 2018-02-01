@@ -41,6 +41,28 @@ class Task(models.Model):
                                    store=False,
                                    string='Assigned To')
 
+    @api.multi
+    def trigger_start(self):
+        obj = self.env['pms.time']
+        data = {
+            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+            'employee_id': self.env.user.id,
+            'progress': 'start',
+            'task_id': self.id
+        }
+        obj.create(data)
+
+    @api.multi
+    def trigger_stop(self):
+        obj = self.env['pms.time']
+        data = {
+            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),
+            'employee_id': self.env.user.id,
+            'progress': 'stop',
+            'task_id': self.id
+        }
+        obj.create(data)
+
     def _get_current_user(self):
         for rec in self:
             rec.current_user = self.env.user.id
@@ -105,3 +127,13 @@ class Task(models.Model):
         self.check_rights()
         val['date'] = datetime.now().strftime('%Y-%m-%d')
         return super(Task, self).create(val)
+
+
+class TimeSheet(models.Model):
+    _name = 'pms.time'
+    _description = 'PMS Time'
+
+    date = fields.Datetime(string='Date', required=True)
+    employee_id = fields.Many2one(comodel_name='res.users', string='Employee', required=True)
+    progress = fields.Selection([('start', 'Start'), ('stop', 'STOP')], string='Progress', required=True)
+    task_id = fields.Many2one(comodel_name='pms.task', string='Task', required=True)

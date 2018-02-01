@@ -43,6 +43,16 @@
                                widget="many2many_tags"
                                attrs="{'readonly':[('progress', 'not in',['draft'])]}"/>
 
+                        <button name="trigger_start" string="Start"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('progress', 'in',['draft', 'completed', 'cancelled'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_admin"/>
+
+                        <button name="trigger_stop" string="Stop"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible':[('progress', 'in',['draft', 'completed', 'cancelled'])]}"
+                            groups="vvt_pms.group_vvt_project_management_tl,vvt_pms.group_vvt_project_management_admin"/>
+
                     </group>
 
                     <notebook>
