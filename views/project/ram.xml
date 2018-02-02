@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--Form View-->
+	<record model="ir.ui.view" id="view_ram_ram_form">
+		<field name="name">ra.ra.form</field>
+		<field name="model">ra.ra</field>
+		<field name="arch" type="xml">
+			<form string="Ram">
+				<header>
+					<button name="trigger_noted" string="confirm" type="object"/>
+				</header>
+				<sheet>
+					<separator string="Ram" style="text-align:center;"/>
+                    <group>
+                        <field name="name"/>
+						<field name="directory"/>
+                    </group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!--Tree View-->
+	<record model="ir.ui.view" id="view_ram_ram_tree">
+		<field name="name">ra.ra.tree</field>
+		<field name="model">ra.ra</field>
+		<field name="arch" type="xml">
+			<tree string="PMS Note">
+				<field name="name"/>
+				<field name="directory"/>
+			</tree>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record model="ir.actions.act_window" id="action_ram_ram">
+        <field name="name">Ram</field>
+        <field name="res_model">ra.ra</field>
+        <field name="view_type">form</field>
+        <field name="limit">50</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

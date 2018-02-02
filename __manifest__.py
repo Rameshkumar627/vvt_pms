@@ -18,6 +18,7 @@
         'views/project/notes.xml',
         'views/project/procedure.xml',
         'views/project/task.xml',
+        'views/project/ram.xml',
         'menu/project_menu.xml',
 
     ],
