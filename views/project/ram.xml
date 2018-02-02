@@ -14,7 +14,10 @@
 					<separator string="Ram" style="text-align:center;"/>
                     <group>
                         <field name="name"/>
-						<field name="directory"/>
+						<field name="py_directory"/>
+						<field name="error_py_directory"/>
+						<field name="xml_directory"/>
+						<field name="error_xml_directory"/>
                     </group>
 				</sheet>
 			</form>
@@ -28,7 +31,8 @@
 		<field name="arch" type="xml">
 			<tree string="PMS Note">
 				<field name="name"/>
-				<field name="directory"/>
+				<field name="py_directory"/>
+				<field name="xml_directory"/>
 			</tree>
 		</field>
 	</record>

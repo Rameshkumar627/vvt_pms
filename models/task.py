@@ -21,12 +21,28 @@ from odoo import models, fields, api, _, exceptions
 from datetime import datetime
 
 
-class {0}(models.Model)
+class {0}(models.Model):
     _name = '{1}'
     _description = '{2}'
 
 {3}
         '''
+
+view_template_string = '''
+<record model="ir.ui.view" id="{0}">
+    <field name="name">{1}</field>
+    <field name="model">{2}</field>
+    <field name="arch" type="xml">
+        {3}
+    </field>
+</record>
+'''
+
+xml_template = '''
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    {0}
+</odoo>'''
 
 PROGRESS_INFO = [('draft', 'Draft'),
                  ('assigned', 'Assigned'),
@@ -169,7 +185,13 @@ class RamV(models.Model):
     name = fields.Char(string='Name')
 
     py_template = fields.Text(string='Py Template', default=py_template_string)
-    directory = fields.Char(string='Directory', default="/home/sarpam/vvti_program/models")
+    xml_template = fields.Text(string='Xml Template', default=xml_template)
+    view_template = fields.Text(string='View Template', default=view_template_string)
+    py_directory = fields.Char(string='Py Directory', default="/home/sarpam/Desktop/ram/models")
+    xml_directory = fields.Char(string='XML Directory', default="/home/sarpam/Desktop/ram/views")
+    error_py_directory = fields.Char(string='Error Py Directory', default="/home/sarpam/Desktop/ram/error_models")
+    error_xml_directory = fields.Char(string='Error XML Directory', default="/home/sarpam/Desktop/ram/error_views")
+
     field_binary = fields.Text(string='Binary', default="{0} = fields.Binary(string='{1}', required={2}, readonly={3})")
     field_boolean = fields.Text(string='Boolean', default="{0} = fields.Boolean(string='{1}', required={2}, readonly={3})")
     field_char = fields.Text(string='Char', default="{0} = fields.Char(string='{1}', required={2}, readonly={3})")
@@ -199,6 +221,43 @@ class RamV(models.Model):
         model_file = ir_model['model'].lower().replace(".", "_")
 
         return model_name, class_name, model_description, model_file
+
+    def xml_data(self, model):
+        xml_file = model.replace(".", "_")
+        xml_ids = sock.execute_kw(db, uid, password,
+                                    'ir.ui.view', 'search',
+                                    [[['model', '=', model]]])
+
+        xml_vals = None
+        error = False
+
+        for ids in xml_ids:
+            data = None
+            rec = sock.execute_kw(db, uid, password,
+                                  'ir.ui.view', 'read',
+                                  [ids],
+                                  {'fields': ['name',
+                                              'type',
+                                              'model',
+                                              'priority',
+                                              'field_parent',
+                                              'inherit_id',
+                                              'xml_id',
+                                              'arch']})
+
+            xml_name = rec['name'].replace(",", "_")
+            arch = rec['arch'].replace('<?xml version="1.0"?>', "")
+            data = self.view_template.format(xml_name, rec['name'], rec['model'], arch)
+
+            if xml_vals:
+                xml_vals = "{0}\n<!--{1} View-->\n{2}".format(xml_vals, rec['type'], data)
+            else:
+                xml_vals = "<!--{0} View-->\n{1}".format(rec['type'], data)
+
+        if not xml_vals:
+            error = True
+
+        return xml_vals, xml_file, error
 
     def field_vals_data(self, model_id):
 
@@ -332,23 +391,48 @@ class RamV(models.Model):
 
         return fields_vals, error
 
-    def file_creation(self, template, model_file, error):
+    def py_file_creation(self, template, model_file, error):
         if error:
-            model_location = 'Error_{0}/{1}.py'.format(self.directory, model_file)
+            directory = self.error_py_directory
+            model_location = '{0}/Error_{1}.py'.format(directory, model_file)
         else:
-            model_location = '{0}/{1}.py'.format(self.directory, model_file)
+            directory = self.py_directory
+            model_location = '{0}/{1}.py'.format(directory, model_file)
 
-        if not os.path.exists(self.directory):
-            os.makedirs(self.directory)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         with open(model_location, 'w+') as model_file:
+            model_file.write(template)
+
+    def xml_file_creation(self, template, xml_file, error):
+        if error:
+            directory = self.error_xml_directory
+            xml_location = '{0}/{1}.xml'.format(directory, xml_file)
+        else:
+            directory = self.xml_directory
+            xml_location = '{0}/{1}.xml'.format(directory, xml_file)
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        with open(xml_location, 'w+') as model_file:
             model_file.write(template)
 
     def trigger_noted(self):
 
-        model_id = 299
-        template = self.py_template
-        model_name, class_name, model_description, model_file = self.model_data(model_id)
-        fields_vals, error = self.field_vals_data(model_id)
-        file_data = template.format(model_name, class_name, model_description, fields_vals)
+        for model_id in range(1, 802):
+            # Py Creation
+            template = self.py_template
+            model_name, class_name, model_description, model_file = self.model_data(model_id)
+            fields_vals, error = self.field_vals_data(model_id)
+            file_data = template.format(model_name, class_name, model_description, fields_vals)
 
-        self.file_creation(file_data, model_file, error)
+            self.py_file_creation(file_data, model_file, error)
+
+            # XML Creation
+            template = self.xml_template
+            xml_vals, xml_file, error = self.xml_data(class_name)
+            xml_data = template.format(xml_vals)
+
+            self.xml_file_creation(xml_data, xml_file, error)
+
+            print "completed model:{0}".format(class_name)
